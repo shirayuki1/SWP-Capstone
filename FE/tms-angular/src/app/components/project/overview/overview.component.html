@@ -1,0 +1,184 @@
+<div style="display: flex; height: 100%;">
+  <app-new-menu-project [projectId]="projectId" (getProject)="getProject($event)"></app-new-menu-project>
+  <div>
+    <section>
+      <app-header></app-header>
+      <div>
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/app-modern-combined.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/font.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/drilldown.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/style.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/brand-modern.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/assembla.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet"
+          href="https://static.testrail.io/7.5.4.2008/css/banner-enterprise-modern.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/autocomplete.css"
+          media="all" />
+        <link rel="shortcut icon" href="https://static.testrail.io/7.5.4.2008/images/favicon.ico" />
+
+        <div class="table" style="height: 100%;">
+          <div id="content" class="column content overflow-content">
+            <div id="notificationbar" class="notificationbar notificationbar-hidden">
+            </div>
+            <div class="notificationbar notificationbar-local">
+            </div>
+            <div id="content-header" class="content-header content-header-default">
+              <div class="content-header-inner">
+                <div class="content-header-result"></div>
+                <div class="content-header-id">P1</div>
+                <div class="content-header-title page_title">
+                  {{project.projectName}}
+                </div>
+              </div>
+            </div>
+            <div id="content-inner" class="content-inner goals-clear">
+              <div id="content_container">
+                <div class="table">
+                  <div class="column column-p2 column-pad-right">
+                    <h1 class="top"><a id="navigation-overview-viewmilestones" class="nolink"
+                        [routerLink]="['/milestones', projectId]">Milestones</a>
+                    </h1>
+                    <div *ngIf="milestones.length == 0; then thenMilestoneBlock else elseMilestoneBlock"></div>
+                    <ng-template #thenMilestoneBlock>
+                      <p>This project doesn't have any active milestones.
+                        You can add a new milestone.</p>
+                      <div class="button-group">
+                        <a id="navigation-overview-addmilestones" [routerLink]="['/milestones-add', projectId]"
+                          class="button button-left button-add">
+                          Add Milestone </a>
+                      </div>
+                    </ng-template>
+                    <ng-template #elseMilestoneBlock>
+                      <div class="table" style="margin-top: 1.2em;">
+                        <div *ngFor="let milestone of milestones" class="row flex-milestones-row">
+                          <div
+                            class="column summary-column summary-column-icon-compact flex-milestones-1-compact icon-milestone-32 summary-column-first ">
+                          </div>
+                          <div class="column summary-column  flex-milestones-2-compact summary-column-first ">
+                            <div class="summary-title summary-title-compact text-ppp">
+                              <a id="navigation-overview-viewmilestones">{{milestone.milestoneName}}</a>
+                            </div>
+                            <div class="summary-description-compact text-secondary text-ppp">
+                              {{milestone.endDate ? "Due on " + milestone.endDate : "No due date"}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                  <div class="column column-p2 column-pad-left">
+                    <h1 class="top"><a id="navigation-overview-runs" class="nolink"
+                        [routerLink]="['/test-runs', projectId]">Test Runs</a>
+                    </h1>
+                    <div *ngIf="testRuns.length == 0; then thenTestRunBlock else elseTestRunBlock"></div>
+                    <ng-template #thenTestRunBlock>
+                      <p>This project doesn't have any active test
+                        runs. You can add a new test run.</p>
+                      <div class="button-group">
+                        <a id="navigation-overview-addrunssuite" [routerLink]="['/test-runs-add', projectId]"
+                          class="button button-left button-add">
+                          Add Test Run </a>
+                      </div>
+                    </ng-template>
+                    <ng-template #elseTestRunBlock>
+                      <div class="table" style="margin-top: 1.2em;">
+                        <div *ngFor="let testRun of testRuns" class="row flex-runs-row">
+                          <div
+                            class="column summary-column summary-column-icon-compact flex-runs-1-compact icon-run-32 summary-column-first ">
+                          </div>
+                          <div class="column summary-column flex-runs-2-compact summary-column-first ">
+                            <div class="summary-title summary-title-compact text-ppp">
+                              <a [routerLink]="['/test-runs', projectId, 'detail', testRun.runId]"
+                                id="navigation-overview-viewruns">{{testRun.runName}}</a>
+                            </div>
+                            <div class="summary-description-compact text-secondary text-ppp">
+                              By {{testRun.fullname}} on {{testRun.createdOn}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+                <!-- <app-activity></app-activity> -->
+              </div>
+            </div>
+          </div>
+          <div id="qpane-splitter" class="column splitter qpane-splitter" style="display: none">
+          </div>
+          <div id="qpane" class="column qpane" style="width: 600px; display: none">
+            <div id="qpane-empty" class="qpane-empty hidden">
+              <div class="qpane-empty-header">
+                No test case selected. </div>
+              <div class="qpane-empty-body">
+                You can select a different group or change the filters. </div>
+            </div>
+            <div id="qpane-inner">
+              <div id="qpaneSticky">
+                <div id="qpane-content">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="sidebar-splitter" class="column splitter sidebar-splitter">
+          </div>
+          <div id="sidebar" class="column sidebar" style="width: 250px">
+
+            <div class="sidebar-inner">
+              <div class="sidebar-h1 top">Actions</div>
+              <div class="table" style="margin: 1.5em 0 2em 0">
+                <div class="row">
+                  <div class="column summary-column summary-column-icon-compact icon-milestone-32 summary-column-first">
+                  </div>
+                  <div class="column summary-column summary-column-first">
+                    <div class="summary-title summary-title-compact">
+                      <a id="sidebar-milestones-overview" [routerLink]="['/milestones', projectId]">Milestones</a>
+                    </div>
+                    <div class="summary-description-compact text-secondary">
+
+                      <a id="sidebar-milestones-viewall" class="link" [routerLink]="['/milestones', projectId]">View
+                        All</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="column summary-column summary-column-icon-compact icon-run-32">
+                  </div>
+                  <div class="column summary-column">
+                    <div class="summary-title summary-title-compact">
+                      <a id="sidebar-runs-overview" [routerLink]="['/test-runs', projectId]">Test Runs</a>
+                    </div>
+                    <div class="summary-description-compact text-secondary">
+                      <a id="sidebar-runs-add" class="link" [routerLink]="['/test-runs-add', projectId]">Add</a> |
+                      <a id="sidebar-runs-viewall" class="link" [routerLink]="['/test-runs', projectId]">View
+                        All</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="column summary-column summary-column-icon-compact icon-suite-32 summary-column-last">
+                  </div>
+                  <div class="column summary-column summary-column-last">
+                    <div class="summary-title summary-title-compact">
+                      <a id="sidebar-cases-overview" [routerLink]="['/test-cases', projectId]">Test Cases</a>
+                    </div>
+                    <div class="summary-description-compact text-secondary">
+
+                      <a id="sidebar-suites-viewall" class="link" [routerLink]="['/test-cases', projectId]">View
+                        All</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

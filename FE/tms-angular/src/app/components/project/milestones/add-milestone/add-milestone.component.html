@@ -1,0 +1,128 @@
+<div style="display: flex; height: 100%;">
+  <app-new-menu-project [projectId]="milestone.projectId + ''" [selectedMenu]="'milestone'"></app-new-menu-project>
+  <div>
+    <section>
+      <app-header></app-header>
+      <div>
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/app-modern-combined.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/font.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/drilldown.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/style.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/brand-modern.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/assembla.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet"
+          href="https://static.testrail.io/7.5.4.2008/css/banner-enterprise-modern.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/autocomplete.css"
+          media="all" />
+        <link rel="shortcut icon" href="https://static.testrail.io/7.5.4.2008/images/favicon.ico" />
+        <div class="table" style="height: 100%;">
+          <div id="content" class="column content overflow-content">
+
+
+            <div id="content-header" class="content-header content-header-default">
+              <div class="content-header-inner">
+                <div class="content-header-result"></div>
+                <div class="content-header-title page_title">
+                  Add Milestone </div>
+              </div>
+            </div>
+            <div id="content-inner" class="content-inner goals-clear">
+              <form action="index.php?/milestones-add/2/1" id="form" method="post">
+                <div class="form-group form-group-main">
+                  <label for="name">Name <span class="form-required">*</span></label>
+                  <input [(ngModel)]="milestone.milestoneName" class="form-control " type="text" name="name" id="name"
+                    maxlength="250" value="">
+                  <div class="form-description">Ex: <em>Version 1.0</em>, <em>Internal Beta 2</em> or
+                    <em>Sprint #4</em>
+                  </div>
+                </div>
+                <div class="form-separator">
+                </div>
+                <div class="form-group">
+                  <label for="description">
+                    <span class="form-toolbar" style="padding-top: 0px">
+                    </span>
+                    Description </label>
+
+                  <div class="textarea-resizable">
+                    <textarea [(ngModel)]="milestone.description"
+                      class="form-control form-control-full  processed textarea-with-grippie" rows="6"
+                      name="description" id="description"></textarea>
+                    <div class="textarea-grippie"></div>
+                  </div>
+                  <div class="form-description">Use this description to describe the purpose and goals of this
+                    milestone.</div>
+                </div>
+                <div class="form-separator">
+                </div>
+                <div class="form-group">
+                  <label for="due_on">Start Date</label>
+                  <input #startDate name="startDate" [(ngModel)]="milestone.startDate"
+                    [dpDayPicker]="{format: 'YYYY-MM-DD', max: endDate.value}"
+                    class="form-control form-control-small dirty-trackable-datepicker hasDatepicker">
+                  <div class="form-description">The expected or scheduled start date of this milestone (for
+                    upcoming and not yet active milestones).</div>
+                </div>
+                <div class="form-group">
+                  <label for="due_on">End Date</label>
+                  <input #endDate name="endDate" [(ngModel)]="milestone.endDate"
+                    [dpDayPicker]="{format: 'YYYY-MM-DD', min: startDate.value}"
+                    class="form-control form-control-small dirty-trackable-datepicker hasDatepicker">
+                  <div class="form-description">The expected due or end date of this milestone.</div>
+                </div>
+                <div class="form-separator">
+                </div>
+                <div class="form-group">
+                  <div class="checkbox">
+                    <label>
+                      <strong>This milestone is completed</strong>
+                      <input type="checkbox" [checked]="milestone.completed"
+                        (change)="milestone.completed = !milestone.completed">
+                    </label>
+                  </div>
+                  <div class="form-description">Tests and test cases can only be assigned to active
+                    milestones.</div>
+                </div>
+
+                <div class="button-group form-buttons">
+                  <button (click)="submit()" id="accept" class="button button-left button-positive button-ok"
+                    type="button" [disabled]="milestone.milestoneName.trim().length == 0 || !milestone.projectId">
+                    Add Milestone
+                  </button>
+                  <a (click)="cancel()" class="button button-left button-negative button-cancel milestone-form-cancel">
+                    Cancel </a>
+                </div>
+              </form>
+
+            </div>
+          </div>
+          <div id="qpane-splitter" class="column splitter qpane-splitter" style="display: none">
+          </div>
+          <div id="qpane" class="column qpane" style="width: 600px; display: none">
+            <div id="qpane-empty" class="qpane-empty hidden">
+              <div class="qpane-empty-header">
+                No test case selected. </div>
+              <div class="qpane-empty-body">
+                You can select a different group or change the filters. </div>
+            </div>
+            <div id="qpane-inner">
+              <div id="qpaneSticky">
+                <div id="qpane-content">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="sidebar-splitter" class="column splitter sidebar-splitter">
+          </div>
+          <div id="sidebar" class="column sidebar" style="width: 250px">
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+{
+  // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "sync dev",
+      "type": "shell",
+      "command": "./sync_dev",
+      "group": "build"
+    },
+    {
+      "label": "build-dev",
+      "type": "shell",
+      "command": "ng build --base-href=/tms/ --watch --configuration development",
+      "group": "build",
+      "problemMatcher": [
+        "$msCompile"
+      ]
+    },
+  ]
+}

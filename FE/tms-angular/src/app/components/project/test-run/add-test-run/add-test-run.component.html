@@ -1,0 +1,215 @@
+<div style="display: flex; height: 100%;">
+  <app-new-menu-project [projectId]="testRun.projectId + ''" [selectedMenu]="'test-runs'"></app-new-menu-project>
+  <div>
+    <section>
+      <app-header></app-header>
+      <div>
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/app-modern-combined.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/font.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/drilldown.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/style.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/brand-modern.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/assembla.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet"
+          href="https://static.testrail.io/7.5.4.2008/css/banner-enterprise-modern.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/autocomplete.css"
+          media="all" />
+        <link rel="shortcut icon" href="https://static.testrail.io/7.5.4.2008/images/favicon.ico" />
+        <div class="table" style="height: 100%;">
+          <div id="content" class="column content overflow-content">
+            <div id="content-header" class="content-header content-header-default">
+              <div class="content-header-inner">
+                <div *ngIf="currentMode == Mode.Create" class="content-header-title page_title">
+                  Add Test Run
+                </div>
+                <ng-template [ngIf]="currentMode == Mode.Update">
+                  <div class="content-header-id">R{{testRun.runId}}</div>
+                  <div class="content-header-title page_title">
+                    {{testRun.runName}}
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div id="content-inner" class="content-inner">
+              <form action="index.php?/runs/add/2" id="form" method="post"><input type="hidden" name="_token"
+                  value="kyqRSAYnPxiKjL7HwuCW">
+
+                <div class="form-group form-group-main">
+                  <label for="name">Name <span class="form-required">*</span></label>
+                  <input [(ngModel)]="testRun.runName" class="form-control " type="text" name="name" id="name"
+                    maxlength="250">
+                  <div class="form-description">
+                    Ex: <em>Test Run 2014-08-01</em>, <em>Build 240</em> or <em>Version 3.0</em>
+                  </div>
+                </div>
+                <div class="form-separator">
+                </div>
+                <div class="form-group">
+                  <label for="milestone_id">Milestone</label>
+                  <div class="dropdown-size">
+                    <select [(ngModel)]="testRun.milestoneId" name="milestone_id" id="milestone_id"
+                      class="form-control form-control-full form-select searchable  chzn-done" style="width: 100%;">
+                      <option *ngFor="let milestone of milestones" value="{{milestone.milestoneId}}">
+                        {{milestone.milestoneName}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-description">The milestone this test run belongs to.</div>
+                </div>
+                <div class="searchable-wrapper">
+                  <div class="form-group dropdown-size">
+                    <label for="assignedto_id">Assign To</label>
+                    <select [(ngModel)]="testRun.assignedToId" name="user_id" id="user_id"
+                      class="form-control form-control-full form-select searchable  chzn-done" style="width: 100%;">
+                      <option *ngFor="let user of users" value="{{user.userId}}">
+                        {{user.fullname}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-separator">
+                </div>
+                <div class="form-group">
+                  <label for="description"> Description </label>
+
+                  <div class="textarea-resizable">
+                    <textarea [(ngModel)]="testRun.description"
+                      class="form-control form-control-full  processed textarea-with-grippie" rows="6"
+                      name="description" id="description"></textarea>
+                    <div class="textarea-grippie"></div>
+                  </div>
+                  <div class="form-description form-description-full">
+                    Use this description to describe the purpose of this test run. </div>
+                </div>
+
+                <input type="hidden" id="case_ids" name="case_ids" class="dirty-trackable" value="">
+                <input type="hidden" id="rerun_id" name="rerun_id" value="0">
+                <input type="hidden" id="copy_assignedto" name="copy_assignedto" value="">
+
+                <div class="form-separator">
+                </div>
+                <div class="form-group form-control-default">
+                  <div class="radio" style="margin-bottom: 15px">
+                    <label>
+                      <strong>Include all test cases</strong>
+                      <input [(ngModel)]="testRun.includeAll" type="radio" class="radio" name="include_all"
+                        [value]="true" id="includeAll" checked="checked">
+                      <p>
+                        Select this option to include all test cases in this test run. If new
+                        test cases are added to the repository, they are also automatically
+                        included in this run. </p>
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <strong>Select specific test cases</strong>
+                      <input [(ngModel)]="testRun.includeAll" type="radio" class="radio" name="include_all"
+                        [value]="false" id="includeSpecific">
+                      <p>You can alternatively select the test cases to include in this test run.
+                        New test cases are not automatically added to this run in this case.</p>
+                    </label>
+                  </div>
+                  <div *ngIf="!testRun.includeAll" id="includeSpecificContainer"
+                    style="margin-top: 5px; margin-left: 20px; padding-bottom: 15px;">
+                    <div class="form-message">
+                      <span id="includeSpecificInfo">
+                        <strong>{{testCasesIdIncluded.length}}</strong> test cases included (<span
+                          style="color: #5993bc; text-decoration: none; background-color: transparent; cursor: pointer;"
+                          (click)="openDialog()">change
+                          selection</span>)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="button-group form-buttons">
+                  <button *ngIf="currentMode == Mode.Create" (click)="submit()" id="accept"
+                    class="button button-left button-positive button-ok" type="button"
+                    [disabled]="testRun.runName.trim().length == 0 || !testRun.projectId">
+                    Add Test Run
+                  </button>
+                  <button *ngIf="currentMode == Mode.Update" (click)="update()" id="accept"
+                    class="button button-left button-positive button-ok" type="button"
+                    [disabled]="testRun.runName.trim().length == 0 || !testRun.projectId">
+                    Save Test Run
+                  </button>
+                  <button (click)="cancel()" type="button"
+                    class="button button-left button-negative button-cancel run-form-cancel">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+
+              <div class="dialog" id="selectCasesDialog" style="width: 850px; height: 700px">
+                <div class="dialog-title">Select Cases</div>
+                <form id="selectCasesForm">
+                  <div class="dialog-body" style="padding: 0">
+                    <div id="selectCasesContainer" class="select-dialog-container">
+                      <div id="selectCasesContent" class="select-dialog-content" style="display: none">
+                      </div>
+                      <div id="selectCasesProgress" class="select-dialog-progress">
+                        <div class="icon-progress-large" title="Loading..."></div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div class="dialog-buttons-pane-container">
+                  <div class="button-group dialog-buttons-highlighted">
+                    <button id="selectCasesSubmit" type="submit"
+                      class="button button-left button-positive button-ok dialog-action-default">
+                      OK </button>
+                    <a id="selectCasesClose"
+                      class="button button-left button-negative button-cancel dialog-action-close">
+                      Cancel </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="qpane-splitter" class="column splitter qpane-splitter" style="display: none">
+          </div>
+          <div id="qpane" class="column qpane" style="width: 600px; display: none">
+            <div id="qpane-empty" class="qpane-empty hidden">
+              <div class="qpane-empty-header">
+                No test case selected. </div>
+              <div class="qpane-empty-body">
+                You can select a different group or change the filters. </div>
+            </div>
+            <div id="qpane-inner">
+              <div id="qpaneSticky">
+                <div id="qpane-content">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="sidebar-splitter" class="column splitter sidebar-splitter">
+          </div>
+          <div id="sidebar" class="column sidebar" style="width: 250px">
+            <div class="sidebar-inner">
+              <ng-template [ngIf]="currentMode == Mode.Update">
+                <div class="sidebar-h1 top">Actions</div>
+                <p>Archive this test run to prevent future modifications to its tests and results.</p>
+                <div class="sidebar-action">
+                  <button class="button button-close" type="button" (click)="close()">Close this test run</button>
+                </div>
+                <p class="">Delete this test run to remove it from your project.</p>
+                <div class="sidebar-action">
+                  <span class="button button-negative button-delete">
+                    <a class="link-noline">Delete this test run</a> </span>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+</div>

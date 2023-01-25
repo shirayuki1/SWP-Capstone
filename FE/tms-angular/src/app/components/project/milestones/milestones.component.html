@@ -1,0 +1,140 @@
+<div style="display: flex; height: 100%;">
+  <app-new-menu-project [projectId]="projectId" [selectedMenu]="'milestone'"></app-new-menu-project>
+  <div>
+    <section>
+      <app-header></app-header>
+      <div>
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/app-modern-combined.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/font.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/drilldown.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/style.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/brand/brand-modern.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/assembla.css"
+          media="all" />
+        <link type="text/css" rel="stylesheet"
+          href="https://static.testrail.io/7.5.4.2008/css/banner-enterprise-modern.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="https://static.testrail.io/7.5.4.2008/css/autocomplete.css"
+          media="all" />
+        <link rel="shortcut icon" href="https://static.testrail.io/7.5.4.2008/images/favicon.ico" />
+
+        <div class="table" style="height: 100%;">
+          <div id="content" class="column content overflow-content">
+
+            <div id="content-header" class="content-header content-header-default">
+              <div class="content-header-inner">
+                <div class="content-header-title page_title">
+                  Milestones </div>
+              </div>
+            </div>
+            <div id="content-inner" class="content-inner goals-clear">
+              <div *ngIf="!incompleteMilestones.length && !completedMilestones.size; then thenBlock else elseBlock">
+              </div>
+              <ng-template #thenBlock>
+                <div class="empty empty-with-explanation">
+                  <div class="empty-explanation">
+                    <div class="empty-explanation-title">What's a milestone?</div>
+                    <div class="empty-explanation-body">Add project milestones (such as software releases) to
+                      Test
+                      Management System to manage and track multiple test runs for a single milestone.</div>
+                  </div>
+                  <div class="empty-content empty-info">
+                    <div class="empty-title">This project doesn't have any milestones, yet.</div>
+                    <div class="empty-body">
+                      <p>No milestones have been defined for this project yet. Use the following button to
+                        create
+                        the first milestone.</p>
+                      <div class="button-group">
+                        <a [routerLink]="['/milestones-add', projectId]" class="button button-left button-add">
+                          Add Milestone </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #elseBlock>
+                <ng-template [ngIf]="incompleteMilestones.length">
+                  <h1 class="top width-4">
+                    Open
+                  </h1>
+                  <div id="active">
+                    <div style="margin-top: 1.2em;">
+                      <div *ngFor="let milestone of incompleteMilestones" id="run-24" class="table table-fixed">
+                        <div id="milestone-3" class="row flex-milestones-row">
+                          <div
+                            class="column summary-column summary-column-icon flex-milestones-1 icon-milestone-64 summary-column-first ">
+                          </div>
+                          <div class="column summary-column summary-column-first" style="flex-grow: 1;">
+                            <div class="summary-title text-ppp">
+                              <a href="index.php?/milestones/view/3">{{milestone.milestoneName}}</a>
+                            </div>
+                            <div class="summary-links text-secondary">
+                              Due on {{milestone.endDate}} | <a class="link"
+                                href="index.php?/milestones/edit/3">Edit</a>
+                            </div>
+                            <div class="summary-description">
+                              <div *ngIf="milestone.activeTestRun; then thenSummaryBlock else elseSummaryBlock"></div>
+                              <ng-template #thenSummaryBlock>
+                                Has <strong>{{milestone.activeTestRun}}</strong> active test runs.
+                              </ng-template>
+                              <ng-template #elseSummaryBlock>
+                                No active test runs.
+                              </ng-template>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template [ngIf]="completedMilestones.size">
+                  <h1 style="margin-top: 2em" class="width-6">
+                    Completed
+                  </h1>
+                  <div id="completed">
+                    <div *ngFor="let entry of completedMilestones | keyvalue">
+                      <h3>
+                        <span class="title">{{entry.key}}</span>
+                      </h3>
+                      <table class="run-grid grid">
+                        <colgroup>
+                          <col>
+                        </colgroup>
+                        <tbody>
+                          <tr *ngFor="let milestone of entry.value" class="odd hoverSensitive">
+                            <td>
+                              <a [routerLink]="['/test-runs', projectId, 'detail', milestone.milestoneId]">
+                                {{milestone.milestoneName}}
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-template>
+            </div>
+          </div>
+          <div id="sidebar-splitter" class="column splitter sidebar-splitter">
+          </div>
+          <div id="sidebar" class="column sidebar" style="width: 250px">
+
+            <div class="sidebar-inner">
+              <a id="navigation-milestones-add" class="sidebar-button" [routerLink]="['/milestones-add', projectId]">
+                <span>Add Milestone</span>
+              </a>
+              <p class="top">There are no milestones.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
